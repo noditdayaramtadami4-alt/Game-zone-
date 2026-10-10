@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="theme-color" content="#050505">
+
+<title>Game Zone | Kurukheda</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #050505;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+button, a {
+  font: inherit;
+}
+
+#intro {
+  min-height: 100svh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at center, #252525 0%, #090909 50%, #000 100%);
+}
+
+#particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.owner {
+  position: absolute;
+  top: 28px;
+  left: 0;
+  width: 100%;
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: #aaa;
+  z-index: 2;
+}
+
+.intro-content {
+  position: relative;
+  z-index: 2;
+  width: 90%;
+  max-width: 800px;
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: #999;
+  margin-bottom: 25px;
+}
+
+#caption {
+  font-size: clamp(27px, 6vw, 60px);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+  text-shadow: 0 0 25px #777;
+  min-height: 2.5em;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+#caption.show {
+  animation: reveal 0.65s ease forwards;
+}
+
+@keyframes reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#brand {
+  display: none;
+  font-size: clamp(38px, 10vw, 100px);
+  font-weight: 1000;
+  line-height: 1;
+  letter-spacing: -3px;
+  text-shadow: 0 0 35px #aaa;
+}
+
+#brand span {
+  display: block;
+  font-size: 15px;
+  letter-spacing: 12px;
+  margin-top: 22px;
+  color: #bbb;
+}
+
+#status {
+  position: absolute;
+  bottom: 25px;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: #777;
+}
+
+#home {
+  padding: 90px 7% 60px;
+  background: #080808;
+}
+
+.topline {
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: #999;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: clamp(40px, 9vw, 90px);
+  line-height: 0.95;
+  letter-spacing: -3px;
+  margin-bottom: 25px;
+}
+
+h1 span {
+  color: #888;
+}
+
+.description {
+  max-width: 570px;
+  line-height: 1.8;
+  color: #aaa;
+  font-size: 15px;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.badge {
+  border: 1px solid #444;
+  padding: 12px 16px;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+.section {
+  padding: 65px 7%;
+  border-top: 1px solid #222;
+}
+
+.section-label {
+  color: #888;
+  font-size: 10px;
+  letter-spacing: 5px;
+  margin-bottom: 16px;
+}
+
+h2 {
+  font-size: clamp(28px, 5vw, 48px);
+  margin-bottom: 30px;
+  text-transform: uppercase;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.game {
+  position: relative;
+  min-height: 110px;
+  padding: 20px 14px;
+  border: 1px solid #292929;
+  background: linear-gradient(135deg, #181818, #070707);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: 0.25s;
+}
+
+.game:hover {
+  border-color: #aaa;
+  transform: translateY(-3px);
+}
+
+.game small {
+  color: #777;
+  font-size: 9px;
+  letter-spacing: 3px;
+}
+
+.game strong {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.more {
+  margin-top: 20px;
+  color: #888;
+  font-size: 12px;
+}
+
+.console-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.console {
+  border: 1px solid #383838;
+  padding: 25px 18px;
+  background: #101010;
+}
+
+.console h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.console p {
+  font-size: 13px;
+  color: #999;
+  line-height: 1.7;
+}
+
+.location {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.address {
+  font-size: clamp(23px, 5vw, 42px);
+  line-height: 1.4;
+  margin-bottom: 20px;
+}
+
+.arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 52px;
+  height: 52px;
+  border: 1px solid #777;
+  border-radius: 50%;
+  color: white;
+  text-decoration: none;
+  font-size: 25px;
+  margin: 35px auto 0;
+  animation: float 1.5s infinite;
+}
+
+@keyframes float {
+  50% { transform: translateY(8px); }
+}
+
+footer {
+  padding: 30px 7%;
+  border-top: 1px solid #222;
+  color: #777;
+  font-size: 11px;
+  letter-spacing: 2px;
+  line-height: 2;
+}
+
+@media (min-width: 700px) {
+  .game-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .console-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- CINEMATIC INTRO -->
+
+<section id="intro">
+
+  <canvas id="particles"></canvas>
+
+  <div class="owner">OWNER: BITTU</div>
+
+  <div class="intro-content">
+
+    <div class="eyebrow">AN EXPERIENCE IS LOADING</div>
+
+    <div id="caption" aria-live="polite"></div>
+
+    <div id="brand">
+      GAME ZONE
+      <span>KURUKHEDA</span>
+    </div>
+
+  </div>
+
+  <div id="status">WELCOME TO THE NEXT LEVEL</div>
+
+</section>
+
+
+<!-- HOMEPAGE -->
+
+<main id="home">
+
+  <div class="topline">YOUR NEXT LEVEL STARTS HERE</div>
+
+  <h1>
+    GAME<br>
+    <span>ZONE.</span>
+  </h1>
+
+  <p class="description">
+    Big games. Good friends. Unforgettable moments.
+
+    Step into a gaming experience where every match,
+    every mission and every victory becomes a memory.
+
+    Kurukheda, your game time is about to get better.
+  </p>
+
+  <div class="badges">
+    <div class="badge">PLAY</div>
+    <div class="badge">COMPETE</div>
+    <div class="badge">REPEAT</div>
+  </div>
+
+  <a class="arrow" href="#games"
+     aria-label="Explore games">↓</a>
+
+</main>
+
+
+<!-- GAMES -->
+
+<section class="section" id="games">
+
+  <div class="section-label">THE GAME LIBRARY</div>
+
+  <h2>Choose Your Game.</h2>
+
+  <div class="game-grid">
+
+    <article class="game">
+      <small>01 / ACTION ADVENTURE</small>
+      <strong>Red Dead Redemption 2</strong>
+    </article>
+
+    <article class="game">
+      <small>02 / ACTION</small>
+      <strong>God of War Ragnarök</strong>
+    </article>
+
+    <article class="game">
+      <small>03 / ADVENTURE</small>
+      <strong>Ghost of Tsushima</strong>
+    </article>
+
+    <article class="game">
+      <small>04 / SUPERHERO</small>
+      <strong>Marvel's Spider-Man</strong>
+    </article>
+
+    <article class="game">
+      <small>05 / SUPERHERO</small>
+      <strong>Marvel's Spider-Man: Miles Morales</strong>
+    </article>
+
+    <article class="game">
+      <small>06 / STORY</small>
+      <strong>The Last of Us Remastered</strong>
+    </article>
+
+    <article class="game">
+      <small>07 / ADVENTURE</small>
+      <strong>Uncharted 4</strong>
+    </article>
+
+    <article class="game">
+      <small>08 / OPEN WORLD</small>
+      <strong>GTA V</strong>
+    </article>
+
+    <article class="game">
+      <small>09 / SUPERHERO</small>
+      <strong>Batman: Arkham Knight</strong>
+    </article>
+
+    <article class="game">
+      <small>10 / CO-OP</small>
+      <strong>It Takes Two</strong>
+    </article>
+
+    <article class="game">
+      <small>11 / CO-OP STORY</small>
+      <strong>A Way Out</strong>
+    </article>
+
+    <article class="game">
+      <small>12 / FIGHTING</small>
+      <strong>Mortal Kombat 11</strong>
+    </article>
+
+    <article class="game">
+      <small>13 / FIGHTING</small>
+      <strong>Tekken 7</strong>
+    </article>
+
+    <article class="game">
+      <small>14 / SPORTS</small>
+      <strong>FIFA 23</strong>
+    </article>
+
+    <article class="game">
+      <small>15 / SHOOTER</small>
+      <strong>Call of Duty: Black Ops III</strong>
+    </article>
+
+    <article class="game">
+      <small>16 / WRESTLING</small>
+      <strong>WWE 2K24</strong>
+    </article>
+
+    <article class="game">
+      <small>17 / SHOOTER</small>
+      <strong>Borderlands: The Handsome Collection</strong>
+    </article>
+
+  </div>
+
+  <p class="more">
+    AND MANY MORE GAMES TO EXPLORE.
+  </p>
+
+</section>
+
+
+<!-- CONSOLES -->
+
+<section class="section" id="consoles">
+
+  <div class="section-label">THE HARDWARE</div>
+
+  <h2>Pick Your Console.</h2>
+
+  <div class="console-grid">
+
+    <article class="console">
+      <h3>PlayStation 4</h3>
+      <p>
+        Explore adventures, action games, sports,
+        racing and multiplayer experiences.
+      </p>
+    </article>
+
+    <article class="console">
+      <h3>PlayStation 3</h3>
+      <p>
+        Enjoy classic gaming favourites
+        and fun gaming sessions with friends.
+      </p>
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- LOCATION -->
+
+<section class="section location" id="location">
+
+  <div class="section-label">FIND YOUR WAY HERE</div>
+
+  <h2>Ready to Play?</h2>
+
+  <div class="address">
+    Old Bank of India,<br>
+    Near Sai Stationary,<br>
+    Kurukheda.
+  </div>
+
+  <p class="description">
+    Owner: Bittu
+  </p>
+
+  <a class="arrow" href="#home"
+     aria-label="Back to top">↑</a>
+
+</section>
+
+
+<footer>
+  GAME ZONE — KURUKHEDA<br>
+  GOOD GAMES. GREAT MEMORIES.
+</footer>
+
+
+<script>
+/* CINEMATIC INTRO */
+
+const lines = [
+  "Hey, Kurukheda... ready to level up?",
+  "Something exciting is coming to your town.",
+  "Epic adventures. Insane action. Legendary battles.",
+  "Grab your controller, bring your friends, and make memories.",
+  "Kurukheda... your gaming era starts now.",
+  "Welcome to Game Zone. Let's play!"
+];
+
+const caption = document.getElementById("caption");
+const brand = document.getElementById("brand");
+const statusText = document.getElementById("status");
+
+let current = 0;
+let finished = false;
+
+function chooseVoice() {
+  const voices = speechSynthesis.getVoices();
+
+  return voices.find(v =>
+    /^en/i.test(v.lang) &&
+    /male|david|mark|guy|daniel/i.test(v.name)
+  ) || voices.find(v =>
+    /^en/i.test(v.lang)
+  ) || null;
+}
+
+function speakLine(text, done) {
+  if (!("speechSynthesis" in window)) {
+    caption.textContent = text;
+    caption.classList.add("show");
+
+    setTimeout(done, 2800);
+    return;
+  }
+
+  speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+
+  utterance.lang = "en-US";
+  utterance.rate = 0.91;
+  utterance.pitch = 0.85;
+  utterance.volume = 1;
+
+  const voice = chooseVoice();
+
+  if (voice) {
+    utterance.voice = voice;
+  }
+
+  let advanced = false;
+
+  function next() {
+    if (advanced) return;
+    advanced = true;
+    done();
+  }
+
+  utterance.onend = next;
+  utterance.onerror = next;
+
+  try {
+    speechSynthesis.speak(utterance);
+  } catch (error) {
+    next();
+  }
+
+  // Safety fallback if speech does not finish.
+  setTimeout(next, 9000);
+}
+
+function showLine() {
+  if (finished) return;
+
+  if (current >= lines.length) {
+    showBrand();
+    return;
+  }
+
+  caption.classList.remove("show");
+  caption.textContent = "";
+
+  setTimeout(() => {
+    if (finished) return;
+
+    const line = lines[current];
+
+    caption.textContent = line.toUpperCase();
+    caption.classList.add("show");
+
+    speakLine(line, () => {
+      caption.classList.remove("show");
+
+      setTimeout(() => {
+        current++;
+        showLine();
+      }, 350);
+    });
+  }, 250);
+}
+
+function showBrand() {
+  finished = true;
+
+  caption.style.display = "none";
+  brand.style.display = "block";
+
+  statusText.textContent = "WELCOME TO GAME ZONE";
+
+  brand.animate(
+    [
+      { opacity: 0, transform: "scale(0.8)" },
+      { opacity: 1, transform: "scale(1)" }
+    ],
+    {
+      duration: 1000,
+      easing: "ease-out",
+      fill: "forwards"
+    }
+  );
+
+  setTimeout(() => {
+    document.getElementById("home").scrollIntoView({
+      behavior: "smooth"
+    });
+  }, 2200);
+}
+
+
+/* BLACK-AND-WHITE PARTICLES */
+
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+let particles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  particles = Array.from({ length: 65 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 2 + 0.5,
+    speed: Math.random() * 0.5 + 0.15
+  }));
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  particles.forEach(p => {
+    ctx.fillStyle = "rgba(255,255,255,0.55)";
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fill();
+
+    p.y -= p.speed;
+
+    if (p.y < 0) {
+      p.y = canvas.height;
+      p.x = Math.random() * canvas.width;
+    }
+  });
+
+  requestAnimationFrame(animateParticles);
+}
+
+window.addEventListener("resize", resizeCanvas);
+
+resizeCanvas();
+animateParticles();
+
+
+/* START INTRO AUTOMATICALLY */
+
+function startIntro() {
+  if (finished || current > 0) return;
+
+  showLine();
+}
+
+if ("speechSynthesis" in window) {
+  speechSynthesis.onvoiceschanged = () => {
+    // Refresh available browser voices.
+  };
+}
+
+window.addEventListener("load", () => {
+  setTimeout(startIntro, 700);
+});
+</script>
+
+</body>
+  </html>
